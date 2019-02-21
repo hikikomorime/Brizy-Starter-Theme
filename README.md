@@ -4,9 +4,9 @@
 
 **Contributors:** [themefuse](https://profiles.wordpress.org/themefuse)  
 **Requires at least:** WordPress 4.7  
-**Tested up to:** WordPress 5.0  
-**Stable tag:** 1.0  
-**Version:** 1.0  
+**Tested up to:** WordPress 5.0.3 
+**Stable tag:** 1.0.1  
+**Version:** 1.0.1  
 **License:** GPLv3  
 **License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
 **Tags:** custom-logo, featured-images, threaded-comments, translation-ready
@@ -38,6 +38,15 @@ In order to change the styling used throughout the site, use **Brizy**.
 3. Click on the 'Activate' button to use your new theme right away.
 
 ## Changelog ##
+
+### 1.0.1 ###
+* Released: February 21, 2019
+
+Added TGM to import required plugins,
+
+Possibility to Import Demo with One Click Demo Import plugin,
+
+Authors filters.
 
 ### 1.0 ###
 * Released: January 16, 2019

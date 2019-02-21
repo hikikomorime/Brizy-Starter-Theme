@@ -9,8 +9,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 if ( ! isset( $content_width ) ) {
-	$content_width = 800; // pixels
+	$content_width = 1920; // pixels
 }
+
+define( 'THEME_DIR', get_template_directory() );
+define( 'THEME_URI', get_template_directory_uri() );
 
 /**
  * Set up theme support
@@ -37,12 +40,22 @@ if ( ! function_exists( 'brizy_starter_theme_setup' ) ) {
          * Enable support for Post Thumbnails on posts and pages.
          */
         add_theme_support( 'post-thumbnails' );
-        set_post_thumbnail_size( 1568, 9999 );
+
+        /**
+         * No need for default images as Brizy generates its own.
+         */
+        remove_image_size('medium_large');
+        add_image_size('medium_large', 150, 150, true);
+        remove_image_size('medium');
+        add_image_size('medium', 150, 150, true);
+        remove_image_size('large');
+        add_image_size('large', 150, 150, true);
 
         register_nav_menus(
             array(
-                'menu-1' => __( 'Primary', 'brizy_starter_theme' ),
-                'footer' => __( 'Footer Menu', 'brizy_starter_theme' ),
+                'primary'   => __( 'Primary Menu', 'brizy-starter-theme' ),
+                'secondary' => __( 'Secondary Menu', 'brizy-starter-theme' ),
+                'footer'    => __( 'Footer Menu', 'brizy-starter-theme' )
             )
         );
 
@@ -67,12 +80,17 @@ if ( ! function_exists( 'brizy_starter_theme_setup' ) ) {
         add_theme_support(
             'custom-logo',
             array(
-                'height'      => 190,
-                'width'       => 190,
+                'height'      => 150,
+                'width'       => 150,
                 'flex-width'  => true,
                 'flex-height' => true,
             )
         );
+
+        // TGM
+        include_once(THEME_DIR . '/includes/tgm/class-tgm-plugin-activation.php');
+        add_action('tgmpa_register', 'brizy_starter_theme_plugins');
+
 	}
 }
 add_action( 'after_setup_theme', 'brizy_starter_theme_setup' );
@@ -216,3 +234,139 @@ if ( ! function_exists( 'brizy_starter_theme_comment_count' ) ) :
         }
     }
 endif;
+
+/**
+ * After Import Setup
+ *
+ * Set the Classic Home Page as front
+ * page and assign the menu to
+ * the main menu location.
+ */
+add_action('pt-ocdi/after_import', 'brizy_ocdi_after_import_setup');
+function brizy_ocdi_after_import_setup() {
+    $primary_menu = get_term_by('name', 'Primary Menu', 'nav_menu');
+    if (!$primary_menu) {
+        $primary_menu = get_term_by('name', 'Main Menu', 'nav_menu');
+    }
+    if ($primary_menu) {
+        set_theme_mod('nav_menu_locations', array('primary' => $primary_menu->term_id));
+    }
+
+    $secondary_menu = get_term_by('name', 'Secondary Menu', 'nav_menu');
+    if ($secondary_menu) {
+        set_theme_mod('nav_menu_locations', array('secondary' => $secondary_menu->term_id));
+    }
+
+    $footer_menu = get_term_by('name', 'Footer Menu', 'nav_menu');
+    if ($footer_menu) {
+        set_theme_mod('nav_menu_locations', array('footer' => $footer_menu->term_id));
+    }
+
+    $front_page_id = get_page_by_title('Home');
+    if ($front_page_id) {
+        update_option('page_on_front', $front_page_id->ID);
+        update_option('show_on_front', 'page');
+    }
+    $blog_page_id = get_page_by_title('Blog');
+    if ($blog_page_id) {
+        update_option('page_for_posts', $blog_page_id->ID);
+    }
+}
+
+
+/** * * * * * * * * * * * * * * * * * * * * * Change this with your info * * * * * * * * * * * * * * * * * * * * * * */
+
+/**
+ * TGM
+ *
+ * An addon which helps theme to install
+ * and activate different plugins.
+ */
+if ( ! function_exists( 'brizy_starter_theme_plugins' ) ) {
+    function brizy_starter_theme_plugins() {
+        $plugins = array(
+            array(
+                'name'      => esc_html__('Brizy', 'brizy-starter-theme'),
+                'slug'      => 'brizy',
+                'required'  => true
+            ),
+            array(
+                'name'      => esc_html__('Brizy Pro', 'brizy-starter-theme'),
+                'slug'      => 'brizy-pro',
+                'source'    => THEME_DIR . '/includes/plugins/brizy-pro.zip',
+                'required'  => false
+            ),
+            array(
+                'name'       => esc_html__('One Click Demo Import', 'brizy-starter-theme'),
+                'slug'       => 'one-click-demo-import',
+                'required'   => false
+            ),
+
+        );
+        $config = array(
+            'id'           => 'tgmpa',
+            'default_path' => '',
+            'menu'         => 'tgmpa-install-plugins',
+            'parent_slug'  => 'themes.php',
+            'capability'   => 'edit_theme_options',
+            'has_notices'  => true,
+            'dismissable'  => true,
+            'dismiss_msg'  => '',
+            'is_automatic' => false,
+            'message'      => ''
+        );
+        tgmpa($plugins, $config);
+    }
+}
+
+/**
+ * How to predefine demo imports?
+ *
+ * This question is for theme authors.
+ * To predefine demo imports, you just have to add the following code structure,
+ * with your own values to your theme (using the `pt-ocdi/import_files` filter):
+ */
+function brizy_ocdi_import_files() {
+    $uri = 'http://www.your_domain.com/';
+    return array(
+        array(
+            'import_file_name'           => 'Architekt',
+            'categories'                 => array( 'Business', 'Category 2' ),
+            'import_file_url'            => $uri .'architekt/demo-content.xml',
+            'import_customizer_file_url' => $uri .'architekt/customizer.dat',
+            'import_preview_image_url'   => $uri .'architekt/preview.png',
+            'import_notice'              => __( 'You need to <a href="'. admin_url("plugin-install.php?tab=plugin-information&plugin=woocommerce") .'" target="_blank">Install Now WooCommerce</a> plugin for this demo', 'brizy-starter-theme' ),
+            'preview_url'                => 'https://demo.themefuse.com/?theme=wordpress-business-theme',
+        ),
+        array(
+            'import_file_name'           => 'Demo Import 2',
+            'categories'                 => array( 'New category', 'Old category' ),
+            'import_file_url'            => 'http://www.your_domain.com/ocdi/demo-content2.xml',
+            'import_widget_file_url'     => 'http://www.your_domain.com/ocdi/widgets2.json',
+            'import_customizer_file_url' => 'http://www.your_domain.com/ocdi/customizer2.dat',
+            'import_preview_image_url'   => 'http://www.your_domain.com/ocdi/preview_import_image2.jpg',
+            'import_notice'              => __( 'A special note for this import.', 'brizy-starter-theme' ),
+            'preview_url'                => 'http://www.your_domain.com/my-demo-2',
+        ),
+    );
+}
+add_filter( 'pt-ocdi/import_files', 'brizy_ocdi_import_files' );
+
+function BrizyAuthorLicenseActivationData() {
+    return array(
+        'market'   => 'brizy',
+        'author'   => 'brizy',
+        'theme_id' => '000000'
+    );
+}
+add_filter( 'brizy-pro-license-data', 'BrizyAuthorLicenseActivationData' );
+
+function BrizyAuthorSupportURL() {
+    return 'https://support.your-site.com';
+}
+add_filter( 'brizy_support_url', 'BrizyAuthorSupportURL' );
+
+function BrizyAuthorUpgradeToProAff() {
+    return 'https://brizy.io/pro?your-aff-id';
+}
+add_filter( 'brizy_upgrade_to_pro_url', 'BrizyAuthorUpgradeToProAff' );
