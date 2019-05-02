@@ -282,6 +282,7 @@ function brizy_ocdi_after_import_setup() {
  * An addon which helps theme to install
  * and activate different plugins.
  */
+/**
 if ( ! function_exists( 'brizy_starter_theme_plugins' ) ) {
     function brizy_starter_theme_plugins() {
         $plugins = array(
@@ -318,6 +319,7 @@ if ( ! function_exists( 'brizy_starter_theme_plugins' ) ) {
         tgmpa($plugins, $config);
     }
 }
+*/
 
 /**
  * How to predefine demo imports?
@@ -326,6 +328,7 @@ if ( ! function_exists( 'brizy_starter_theme_plugins' ) ) {
  * To predefine demo imports, you just have to add the following code structure,
  * with your own values to your theme (using the `pt-ocdi/import_files` filter):
  */
+/**
 function brizy_ocdi_import_files() {
     $uri = 'http://www.your_domain.com/';
     return array(
@@ -370,3 +373,4 @@ function BrizyAuthorUpgradeToProAff() {
     return 'https://brizy.io/pro?your-aff-id';
 }
 add_filter( 'brizy_upgrade_to_pro_url', 'BrizyAuthorUpgradeToProAff' );
+*/
