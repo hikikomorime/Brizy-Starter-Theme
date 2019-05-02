@@ -4,7 +4,7 @@
 
 **Contributors:** [themefuse](https://profiles.wordpress.org/themefuse)  
 **Requires at least:** WordPress 4.7  
-**Tested up to:** WordPress 5.0.3 
+**Tested up to:** WordPress 5.0.3  
 **Stable tag:** 1.0.1  
 **Version:** 1.0.1  
 **License:** GPLv3  

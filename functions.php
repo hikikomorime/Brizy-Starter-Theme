@@ -273,6 +273,14 @@ function brizy_ocdi_after_import_setup() {
     }
 }
 
+if ( ! function_exists( 'brizy_starter_theme_register_sidebar' ) ) :
+    function brizy_starter_theme_register_sidebar() {
+        register_sidebars( 2, array( 'name' => 'Sidebar %d', 'brizy-starter-theme' ) );
+	register_sidebars( 4, array( 'name' => 'Footer %d', 'brizy-starter-theme' ) );
+    }
+    add_action( 'widgets_init', 'brizy_starter_theme_register_sidebar' );
+endif;
+
 
 /** * * * * * * * * * * * * * * * * * * * * * Change this with your info * * * * * * * * * * * * * * * * * * * * * * */
 
