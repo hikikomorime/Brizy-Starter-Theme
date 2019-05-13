@@ -88,8 +88,8 @@ if ( ! function_exists( 'brizy_starter_theme_setup' ) ) {
         );
 
         // TGM
-        include_once(THEME_DIR . '/includes/tgm/class-tgm-plugin-activation.php');
-        add_action('tgmpa_register', 'brizy_starter_theme_plugins');
+        //include_once(THEME_DIR . '/includes/tgm/class-tgm-plugin-activation.php');
+        //add_action('tgmpa_register', 'brizy_starter_theme_plugins');
 
 	}
 }
