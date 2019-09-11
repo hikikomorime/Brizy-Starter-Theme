@@ -262,7 +262,7 @@ function brizy_ocdi_after_import_setup() {
         set_theme_mod('nav_menu_locations', array('footer' => $footer_menu->term_id));
     }
 
-    $front_page_id = get_page_by_title('Home');
+    $front_page_id = get_page_by_title('Home') ?  : get_page_by_title('Homepage');
     if ($front_page_id) {
         update_option('page_on_front', $front_page_id->ID);
         update_option('show_on_front', 'page');
