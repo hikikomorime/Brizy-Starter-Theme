@@ -32,7 +32,7 @@ In order to change the styling used throughout the site, use **Brizy**.
 == Installation ==
 
 1. In your admin panel, go to Appearance > Themes and click the 'Add New' button.
-2. Type in 'Brizy Starter Theme' in the search form and hit the 'Enter' key on your keyboard.
+2. Select Upload Theme.
 3. Click on the 'Activate' button to use your new theme right away.
 
 == Changelog ==
